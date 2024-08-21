@@ -78,11 +78,41 @@ button:active {
     color: #38a1f3;
 }
 
+.instagram-button:hover {
+    background: linear-gradient(72.44deg, #FF7A00 11.92%, #FF0169 51.56%, #D300C5 85.69%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.facebook-button:hover {
+    background: linear-gradient(72.44deg, #1877F2 11.92%, #4C69BA 51.56%, #3B5998 85.69%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.snapchat-button:hover {
+    background: linear-gradient(72.44deg, #FFFC00 30%, #FFEB3B 60%, #FFD600 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .quote-botton:hover {
     color: #38a1f3;
 }
 
 .fa-twitter {
+    font-size: 1.5rem;
+}
+
+.fa-instagram {
+    font-size: 1.5rem;
+}
+
+.fa-facebook {
+    font-size: 1.5rem;
+}
+
+.fa-snapchat {
     font-size: 1.5rem;
 }
 
