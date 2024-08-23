@@ -1,6 +1,6 @@
 const quoteContainer = document.getElementById('quote-container');
 const quoteText = document.getElementById('quote');
-const quoteText = document.getElementById('author');
+const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const instagramBtn = document.getElementById('instagram');
 const facebookBtn = document.getElementById('facebook');
@@ -33,11 +33,17 @@ async function getQuotes() {
     const apiUrl = 'https://ademoyosoreoluwa.github.io/quote_generator/quotes.json';
     try {
         const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
         apiQuotes = await response.json();
+        console.log(apiQuotes)
         newQuote();
     } catch (error) {
     //    Catch Error Here
     console.error("Failed to fetch quotes: ", error);
+    quoteText.textContent = "An error occurred while fetching the quote.";
+    authorText.textContent = "Error";
     }
 }
 
@@ -78,14 +84,11 @@ function postQuote() {
 }
 
 // Event Listeners for individual buttons
-twitterBtn.addEventListener('click', tweetQuote); // Already defined
+twitterBtn.addEventListener('click', postQuote); // Already defined
 facebookBtn.addEventListener('click', postQuote);
 instagramBtn.addEventListener('click', postQuote);
 snapchatBtn.addEventListener('click', postQuote);
-
-
-// Event Listeners
 newQuoteBtn.addEventListener('click', newQuote);
-twitterBtn.addEventListener('click', tweetQuote);
+
 // On Load
 getQuotes();
