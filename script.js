@@ -6,7 +6,6 @@ const instagramBtn = document.getElementById('instagram');
 const facebookBtn = document.getElementById('facebook');
 const snapchatBtn = document.getElementById('snapchat');
 const newQuoteBtn = document.getElementById('new-quote');
-const loader = document.getElementById('loader')
 
 let apiQuotes = [];
 
