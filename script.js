@@ -6,6 +6,7 @@ const instagramBtn = document.getElementById('instagram');
 const facebookBtn = document.getElementById('facebook');
 const snapchatBtn = document.getElementById('snapchat');
 const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader')
 
 let apiQuotes = [];
 
@@ -13,6 +14,7 @@ let apiQuotes = [];
 function newQuote() {
     // Pick a Random Quote
     const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
+    quoteText.textContent = quote.text;
     // Check if Author field is blank and replace it with quote unknown.
     if (!quote.author) {
         authorText.textContent = 'Unknown';
@@ -25,7 +27,7 @@ function newQuote() {
     } else {
         quoteText.classList.remove(long-quote);
     }   
-    quoteText.textContent = quote.text;
+    
 }
 
 // GET QUOTES FROM API
@@ -37,8 +39,8 @@ async function getQuotes() {
             throw new Error(`HTTP error! status: ${response.status}`)
         }
         apiQuotes = await response.json();
-        console.log(apiQuotes)
         newQuote();
+        console.log(apiQuotes)
     } catch (error) {
     //    Catch Error Here
     console.error("Failed to fetch quotes: ", error);
@@ -48,46 +50,49 @@ async function getQuotes() {
 }
 
 // Post Quote on All Social Networks
-function postQuote() {
+function postQuote(platform) {
     const quote = `${quoteText.textContent} - ${authorText.textContent}`;
     
-    // Twitter
+    // URLs for Twitter
     const twitterUrlWeb = `https://twitter.com/intent/tweet?text=${encodeURIComponent(quote)}`;
     const twitterUrlApp = `twitter://post?message=${encodeURIComponent(quote)}`;
     
-    // Facebook
+    // URLs for Facebook
     const facebookUrlWeb = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(quote)}`;
     const facebookUrlApp = `fb://facewebmodal/f?href=https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(quote)}`;
     
-    // Instagram (Using text copy prompt as direct posting via URL is not possible)
+    // Messages for Instagram and Snapchat
     const instagramMessage = `Instagram does not allow direct sharing via URL. Please copy and paste the following text to share on Instagram:\n\n"${quote}"`;
-    
-    // Snapchat (Using text copy prompt as direct posting via URL is not possible)
     const snapchatMessage = `Snapchat does not allow direct sharing via URL. Please copy and paste the following text to share on Snapchat:\n\n"${quote}"`;
     
-    // Check if the user is on a mobile device
-    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        // Open Twitter app or web fallback
-        window.open(twitterUrlApp, '_blank');
-        // Open Facebook app or web fallback
-        window.open(facebookUrlApp, '_blank');
-    } else {
-        // Open Twitter website in a new tab
-        window.open(twitterUrlWeb, '_blank');
-        // Open Facebook website in a new tab
-        window.open(facebookUrlWeb, '_blank');
+    if (platform === 'twitter') {
+        // Twitter
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.open(twitterUrlApp, '_blank'); // Try to open Twitter app
+        } else {
+            window.open(twitterUrlWeb, '_blank'); // Open Twitter web
+        }
+    } else if (platform === 'facebook') {
+        // Facebook
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.open(facebookUrlApp, '_blank'); // Try to open Facebook app
+        } else {
+            window.open(facebookUrlWeb, '_blank'); // Open Facebook web
+        }
+    } else if (platform === 'instagram') {
+        // Instagram
+        alert(instagramMessage);
+    } else if (platform === 'snapchat') {
+        // Snapchat
+        alert(snapchatMessage);
     }
-
-    // Prompt the user to copy the text for Instagram and Snapchat
-    alert(instagramMessage);
-    alert(snapchatMessage);
 }
 
 // Event Listeners for individual buttons
-twitterBtn.addEventListener('click', postQuote); // Already defined
-facebookBtn.addEventListener('click', postQuote);
-instagramBtn.addEventListener('click', postQuote);
-snapchatBtn.addEventListener('click', postQuote);
+twitterBtn.addEventListener('click', () => postQuote('twitter'));
+facebookBtn.addEventListener('click', () => postQuote('facebook'));
+instagramBtn.addEventListener('click', () => postQuote('instagram'));
+snapchatBtn.addEventListener('click', () => postQuote('snapchat'));
 newQuoteBtn.addEventListener('click', newQuote);
 
 // On Load
